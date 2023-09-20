@@ -7,7 +7,6 @@ import awsconfig from "./src/aws-exports";
 Amplify.configure({ ...awsconfig, Analytics: { disabled: true } });
 
 function App() {
-
   return (
     <View style={styles.container}>
       <Navigator />
