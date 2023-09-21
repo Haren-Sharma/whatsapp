@@ -6,18 +6,18 @@ const ContactListItem = ({data}) => {
     <Pressable style={styles.container}>
       <Image
         source={{
-          uri: data.user.image,
+          uri:"https://image.shutterstock.com/image-vector/super-mom-hero-superhero-cartoon-600w-720015928.jpg",
         }}
         style={styles.image}
       />
       <View style={styles.content}>
         <View style={styles.row}>
           <Text numberOfLines={1} style={styles.name}>
-            {data.user.name}
+            {data.name}
           </Text>
         </View>
         <Text style={styles.subTitle} numberOfLines={2}>
-            {data.user.status}
+            {data.status}
         </Text>
       </View>
     </Pressable>
