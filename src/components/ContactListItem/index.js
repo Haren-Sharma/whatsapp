@@ -6,7 +6,7 @@ const ContactListItem = ({data}) => {
     <Pressable style={styles.container}>
       <Image
         source={{
-          uri:"https://image.shutterstock.com/image-vector/super-mom-hero-superhero-cartoon-600w-720015928.jpg",
+          uri:data.image,
         }}
         style={styles.image}
       />
