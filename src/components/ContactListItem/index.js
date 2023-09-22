@@ -1,12 +1,64 @@
 import { View, Text, Image, Pressable } from "react-native";
 import styles from "./styles";
+import { API, graphqlOperation, Auth } from "aws-amplify";
+import { createChatRoom, createUserChatRoom } from "../../graphql/mutations";
+import { useNavigation } from "@react-navigation/native";
+import { getCommonChatRoom } from "../../utils/ChatRoomService";
 
-const ContactListItem = ({data}) => {
+const ContactListItem = ({ data }) => {
+  const navigation = useNavigation();
+  const handleContactPress = async () => {
+    const authUser = await Auth.currentAuthenticatedUser();
+    //check if we already have a chatroom with the user
+    const chatRoomId = await getCommonChatRoom(
+      authUser.attributes.sub,
+      data.id
+    );
+    if (chatRoomId !== null) {
+      //navigate to the newly created chatroom
+      navigation.navigate("Chat", {
+        id: chatRoomId,
+        name: data.name,
+      });
+      return;
+    }
+    //create a new chatroom
+    const newChatRoomData = await API.graphql(
+      graphqlOperation(createChatRoom, { input: {} })
+    );
+    if (!newChatRoomData.data?.createChatRoom) {
+      console.log("Error in creating the chatroom");
+    }
+    const chatRoom = newChatRoomData.data?.createChatRoom;
+    //add the clicked user to the chatroom
+    await API.graphql(
+      graphqlOperation(createUserChatRoom, {
+        input: {
+          chatRoomId: chatRoom.id,
+          userId: data.id,
+        },
+      })
+    );
+    //add the auth user to the chatroom
+    await API.graphql(
+      graphqlOperation(createUserChatRoom, {
+        input: {
+          chatRoomId: chatRoom.id,
+          userId: authUser.attributes.sub,
+        },
+      })
+    );
+    //navigate to the newly created chatroom
+    navigation.navigate("Chat", {
+      id: chatRoom.id,
+      name: data.name,
+    });
+  };
   return (
-    <Pressable style={styles.container}>
+    <Pressable style={styles.container} onPress={handleContactPress}>
       <Image
         source={{
-          uri:data.image,
+          uri: data.image,
         }}
         style={styles.image}
       />
@@ -17,7 +69,7 @@ const ContactListItem = ({data}) => {
           </Text>
         </View>
         <Text style={styles.subTitle} numberOfLines={2}>
-            {data.status}
+          {data.status}
         </Text>
       </View>
     </Pressable>
