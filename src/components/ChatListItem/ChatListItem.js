@@ -6,6 +6,7 @@ import { useNavigation } from "@react-navigation/native";
 dayjs.extend(relativetime);
 
 const ChatListItem = ({ chat, authid }) => {
+  console.log("Chat",chat);
   const navigation = useNavigation();
   const users = chat?.users?.items;
   const user=users?.find((us)=>{
@@ -33,7 +34,7 @@ const ChatListItem = ({ chat, authid }) => {
             {user?.name}
           </Text>
           <Text style={styles.subTitle}>
-            {dayjs(chat?.LastMessage?.createdAt).fromNow()}
+            {dayjs(chat?.LastMessage?.createdAt).fromNow(true)}
           </Text>
         </View>
         <Text style={styles.subTitle} numberOfLines={2}>
