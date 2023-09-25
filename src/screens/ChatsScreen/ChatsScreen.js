@@ -14,7 +14,9 @@ const ChatsScreen = () => {
       const chatrooms=await API.graphql(graphqlOperation(GetUserChatRooms,{
         id:authUser.attributes.sub
       }))
-      setChats(chatrooms.data?.getUser?.ChatRooms?.items)
+      const sorted=chatrooms.data?.getUser?.ChatRooms?.items || []
+      sorted.sort((r1,r2)=>new Date(r2.chatRoom.updatedAt)-new Date(r1.chatRoom.updatedAt))
+      setChats(sorted);
       setId(authUser.attributes.sub)
     }
     syncData();

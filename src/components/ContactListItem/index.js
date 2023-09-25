@@ -4,9 +4,20 @@ import { API, graphqlOperation, Auth } from "aws-amplify";
 import { createChatRoom, createUserChatRoom } from "../../graphql/mutations";
 import { useNavigation } from "@react-navigation/native";
 import { getCommonChatRoom } from "../../utils/ChatRoomService";
+import { useEffect, useRef, useState } from "react";
 
 const ContactListItem = ({ data }) => {
   const navigation = useNavigation();
+  const [name, setName] = useState(data?.name);
+  useEffect(() => {
+    const fun = async () => {
+      const authUser = await Auth.currentAuthenticatedUser();
+      if (authUser.attributes.sub === data.id) {
+        setName("You");
+      }
+    };
+    fun();
+  }, []);
   const handleContactPress = async () => {
     const authUser = await Auth.currentAuthenticatedUser();
     //check if we already have a chatroom with the user
@@ -65,7 +76,7 @@ const ContactListItem = ({ data }) => {
       <View style={styles.content}>
         <View style={styles.row}>
           <Text numberOfLines={1} style={styles.name}>
-            {data.name}
+            {name}
           </Text>
         </View>
         <Text style={styles.subTitle} numberOfLines={2}>

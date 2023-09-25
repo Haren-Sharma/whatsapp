@@ -6,6 +6,7 @@ query GetUser($id: ID!) {
         items {
           chatRoom {
             id
+            updatedAt
             LastMessage {
               id
               text

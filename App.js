@@ -28,7 +28,7 @@ function App() {
       //creating one
       await API.graphql(graphqlOperation(createUser,{input:{
         id:id,
-        name:'Abhishek',
+        name:"Haren",
         status:'Hey I am using Whatsapp',
         image:'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ3PNNRDmwDV_an6mG4zJJyuV3ixJDdEDnIeq_jgXR_RmGHc4qGFI8Fkg2dPq3qcoD_ir0&usqp=CAU',
       }}));
