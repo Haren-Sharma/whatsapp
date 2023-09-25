@@ -26,7 +26,7 @@ const ContactListItem = ({ data }) => {
       data.id
     );
     if (chatRoomId !== null) {
-      //navigate to the newly created chatroom
+      //navigate to the existing chatroom
       navigation.navigate("Chat", {
         id: chatRoomId,
         name: data.name,

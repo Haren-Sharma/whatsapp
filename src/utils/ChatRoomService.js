@@ -1,7 +1,6 @@
 import { API, graphqlOperation } from "aws-amplify";
 export const getCommonChatRoom = async (userId1, userId2) => {
   //get all chat rooms of user1 and check for user2 id
-  console.log({ userId1, userId2 });
   const chats = await API.graphql(
     graphqlOperation(GetUserChatRooms, { id: userId1 })
   );

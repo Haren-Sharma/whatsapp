@@ -13,7 +13,7 @@ import Message from "../../components/Message/Message";
 import InputBox from "../../components/InputBox/InputBox";
 import { getChatRoom, listMessagesByChatRoom } from "../../graphql/queries";
 import { API, graphqlOperation } from "aws-amplify";
-import { onCreateMessage } from "../../graphql/subscriptions";
+import { onCreateMessage, onUpdateChatRoom } from "../../graphql/subscriptions";
 
 const ChatScreen = ({ navigation, route }) => {
   const { id, name } = route.params;
@@ -26,6 +26,25 @@ const ChatScreen = ({ navigation, route }) => {
     API.graphql(graphqlOperation(getChatRoom, { id })).then((res) => {
       setChatroom(res.data?.getChatRoom);
     });
+    //subscribe to updates in the chatroom
+    const sub = API.graphql(
+      graphqlOperation(onUpdateChatRoom, {
+        filter: {
+          id: {
+            eq: id,
+          },
+        },
+      })
+    ).subscribe({
+      next: ({ value }) => {
+        setChatroom((cr) => ({
+          ...(cr || {}),
+          ...value?.data?.onUpdateChatRoom,
+        }));
+      },
+      error: (err) => console.warn(err),
+    });
+    return ()=>sub.unsubscribe();
   }, [name]);
 
   //fetch the messages
@@ -39,19 +58,21 @@ const ChatScreen = ({ navigation, route }) => {
       setMessages(res.data?.listMessagesByChatRoom?.items);
     });
     //subscribe to new messages
-    const subscription=API.graphql(graphqlOperation(onCreateMessage,{
-      filter:{
-        chatroomID:{
-          eq:id
-        }
-      }
-    })).subscribe({
+    const subscription = API.graphql(
+      graphqlOperation(onCreateMessage, {
+        filter: {
+          chatroomID: {
+            eq: id,
+          },
+        },
+      })
+    ).subscribe({
       next: ({ value }) => {
-        setMessages((msgs) => [value?.data?.onCreateMessage,...msgs]);
+        setMessages((msgs) => [value?.data?.onCreateMessage, ...msgs]);
       },
       error: (error) => console.warn(error),
     });
-    return ()=>subscription.unsubscribe();
+    return () => subscription.unsubscribe();
   }, [id]);
   if (!chatroom) {
     return (

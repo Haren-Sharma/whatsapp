@@ -34,7 +34,7 @@ const InputBox = ({chatroom}) => {
         value={msg}
         onChangeText={(text) => setMsg(text)}
         style={styles.input}
-        placeholder="type your message.."
+        placeholder="Type your message.."
       />
       <MaterialIcons
         onPress={onSend}
