@@ -13,6 +13,7 @@ import Message from "../../components/Message/Message";
 import InputBox from "../../components/InputBox/InputBox";
 import { getChatRoom, listMessagesByChatRoom } from "../../graphql/queries";
 import { API, graphqlOperation } from "aws-amplify";
+import { onCreateMessage } from "../../graphql/subscriptions";
 
 const ChatScreen = ({ navigation, route }) => {
   const { id, name } = route.params;
@@ -37,6 +38,20 @@ const ChatScreen = ({ navigation, route }) => {
     ).then((res) => {
       setMessages(res.data?.listMessagesByChatRoom?.items);
     });
+    //subscribe to new messages
+    const subscription=API.graphql(graphqlOperation(onCreateMessage,{
+      filter:{
+        chatroomID:{
+          eq:id
+        }
+      }
+    })).subscribe({
+      next: ({ value }) => {
+        setMessages((msgs) => [value?.data?.onCreateMessage,...msgs]);
+      },
+      error: (error) => console.warn(error),
+    });
+    return ()=>subscription.unsubscribe();
   }, [id]);
   if (!chatroom) {
     return (
