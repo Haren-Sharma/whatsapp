@@ -11,7 +11,7 @@ export default styles = StyleSheet.create({
     maxWidth: "80%",
     shadowColor: "#000000",
     elevation: 5,
-    //for ios 
+    //for ios
     shadowOffset: {
       width: 0,
       height: 3,
@@ -23,5 +23,12 @@ export default styles = StyleSheet.create({
   time: {
     color: "gray",
     alignSelf: "flex-end", //to align the time component always on the right
+  },
+  img_msg: {
+    height: 150,
+    width: 200,
+    borderColor: "white",
+    borderWidth: 2,
+    marginBottom:10,
   },
 });
