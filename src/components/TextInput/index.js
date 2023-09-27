@@ -1,0 +1,30 @@
+import { View, TextInput } from "react-native";
+import React from "react";
+import { FontAwesome } from "@expo/vector-icons";
+import styles from "./styles";
+
+const Input = ({ value, onChangeText, placeholder, secure, toggleSecure }) => {
+  return (
+    <View>
+      <TextInput
+        style={styles.inputbox}
+        value={value}
+        autoCorrect={false}
+        onChangeText={onChangeText}
+        placeholder={placeholder}
+        placeholderTextColor='black'
+        secureTextEntry={secure}
+      />
+      {placeholder?.includes("password") && (
+        <FontAwesome
+          onPress={toggleSecure}
+          name={secure ? "eye-slash" : "eye"}
+          style={styles.icon}
+          size={20}
+          color="whitesmoke"
+        />
+      )}
+    </View>
+  );
+};
+export default Input;
