@@ -17,6 +17,7 @@ export const createChatRoom = /* GraphQL */ `
           text
           chatroomID
           userID
+          image
           updatedAt
           __typename
         }
@@ -41,6 +42,7 @@ export const createChatRoom = /* GraphQL */ `
         text
         chatroomID
         userID
+        image
         updatedAt
         __typename
       }
@@ -67,6 +69,7 @@ export const updateChatRoom = /* GraphQL */ `
           text
           chatroomID
           userID
+          image
           updatedAt
           __typename
         }
@@ -91,6 +94,7 @@ export const updateChatRoom = /* GraphQL */ `
         text
         chatroomID
         userID
+        image
         updatedAt
         __typename
       }
@@ -117,6 +121,7 @@ export const deleteChatRoom = /* GraphQL */ `
           text
           chatroomID
           userID
+          image
           updatedAt
           __typename
         }
@@ -141,6 +146,7 @@ export const deleteChatRoom = /* GraphQL */ `
         text
         chatroomID
         userID
+        image
         updatedAt
         __typename
       }
@@ -162,6 +168,7 @@ export const createMessage = /* GraphQL */ `
       text
       chatroomID
       userID
+      image
       updatedAt
       __typename
     }
@@ -178,6 +185,7 @@ export const updateMessage = /* GraphQL */ `
       text
       chatroomID
       userID
+      image
       updatedAt
       __typename
     }
@@ -194,6 +202,7 @@ export const deleteMessage = /* GraphQL */ `
       text
       chatroomID
       userID
+      image
       updatedAt
       __typename
     }
@@ -216,6 +225,7 @@ export const createUser = /* GraphQL */ `
           text
           chatroomID
           userID
+          image
           updatedAt
           __typename
         }
@@ -257,6 +267,7 @@ export const updateUser = /* GraphQL */ `
           text
           chatroomID
           userID
+          image
           updatedAt
           __typename
         }
@@ -298,6 +309,7 @@ export const deleteUser = /* GraphQL */ `
           text
           chatroomID
           userID
+          image
           updatedAt
           __typename
         }
@@ -349,6 +361,7 @@ export const createUserChatRoom = /* GraphQL */ `
           text
           chatroomID
           userID
+          image
           updatedAt
           __typename
         }
@@ -407,6 +420,7 @@ export const updateUserChatRoom = /* GraphQL */ `
           text
           chatroomID
           userID
+          image
           updatedAt
           __typename
         }
@@ -465,6 +479,7 @@ export const deleteUserChatRoom = /* GraphQL */ `
           text
           chatroomID
           userID
+          image
           updatedAt
           __typename
         }
