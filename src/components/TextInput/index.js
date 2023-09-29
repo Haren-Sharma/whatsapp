@@ -3,7 +3,7 @@ import React from "react";
 import { FontAwesome } from "@expo/vector-icons";
 import styles from "./styles";
 
-const Input = ({ value, onChangeText, placeholder, secure, toggleSecure }) => {
+const Input = ({ value, onChangeText, placeholder, secure, toggleSecure,onFocus }) => {
   return (
     <View>
       <TextInput
@@ -14,6 +14,7 @@ const Input = ({ value, onChangeText, placeholder, secure, toggleSecure }) => {
         placeholder={placeholder}
         placeholderTextColor='black'
         secureTextEntry={secure}
+        onFocus={onFocus}
       />
       {placeholder?.includes("password") && (
         <FontAwesome

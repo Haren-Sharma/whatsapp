@@ -8,7 +8,7 @@ export default styles = StyleSheet.create({
     fontWeight:'500',
     borderRadius: 10,
     color: "whitesmoke",
-    borderWidth: StyleSheet.hairlineWidth,
+    borderWidth: 1.2,
     borderColor:'whitesmoke',
     marginVertical: 8,
   },
