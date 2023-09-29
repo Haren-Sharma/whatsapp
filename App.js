@@ -2,14 +2,17 @@ import { StatusBar } from "expo-status-bar";
 import { StyleSheet, View } from "react-native";
 import Navigator from "./src/navigation";
 import { API, Amplify, Auth, graphqlOperation } from "aws-amplify";
-import { withAuthenticator } from "aws-amplify-react-native";
+import { Authenticator } from "@aws-amplify/ui-react-native";
 import awsconfig from "./src/aws-exports";
 import { useEffect } from "react";
 import { getUser } from "./src/graphql/queries";
 import { createUser } from "./src/graphql/mutations";
+import AuthScreen from "./src/screens/Auth/AuthScreen";
+import { useFonts } from "expo-font";
+
 Amplify.configure({ ...awsconfig, Analytics: { disabled: true } });
 
-function App() {
+function Initial() {
   //as soon as the App mounts it means the user is authenticated
   useEffect(() => {
     //get Auth user
@@ -18,6 +21,7 @@ function App() {
         bypassCache: true, //it means it will by pass the cache and query
       });
       const id = authUser.attributes.sub;
+      console.log("Id", id);
       //query the databse using Auth user id(sub)
       const userData = await API.graphql(graphqlOperation(getUser, { id: id }));
       //if there is no users in db,create one}
@@ -26,12 +30,17 @@ function App() {
         return;
       }
       //creating one
-      await API.graphql(graphqlOperation(createUser,{input:{
-        id:id,
-        name:"Haren",
-        status:'Hey I am using Whatsapp',
-        image:'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ3PNNRDmwDV_an6mG4zJJyuV3ixJDdEDnIeq_jgXR_RmGHc4qGFI8Fkg2dPq3qcoD_ir0&usqp=CAU',
-      }}));
+      await API.graphql(
+        graphqlOperation(createUser, {
+          input: {
+            id: id,
+            name: "Haren",
+            status: "Hey I am using Whatsapp",
+            image:
+              "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ3PNNRDmwDV_an6mG4zJJyuV3ixJDdEDnIeq_jgXR_RmGHc4qGFI8Fkg2dPq3qcoD_ir0&usqp=CAU",
+          },
+        })
+      );
     };
     syncUser();
   }, []);
@@ -49,5 +58,18 @@ const styles = StyleSheet.create({
     backgroundColor: "whitesmoke",
   },
 });
-
-export default withAuthenticator(App);
+const App = () => {
+  const [fontsLoaded] = useFonts({
+    "Kalam-bold": require("./assets/fonts/Kalam/Kalam-Bold.ttf"),
+  });
+  return (
+    <Authenticator.Provider>
+      {fontsLoaded && (
+        <Authenticator Container={(props) => <AuthScreen />}>
+          <Initial />
+        </Authenticator>
+      )}
+    </Authenticator.Provider>
+  );
+};
+export default App;
